@@ -1,0 +1,69 @@
+<div *ngIf="!reviewerForm">
+  <form #f="ngForm">
+    <div *ngFor="let field of form">
+      <div class="form-group">
+        <label for="{{field.id}}">{{field.label}}</label>
+
+        <input type="text" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='string'">
+        <input type="checkbox" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='boolean'">
+        <input type="number" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='long'">
+        <select name="field.id" *ngIf="field.type.name=='enum'">
+          <option *ngFor="let val of enumValues" value={{val}}>
+            {{field.type.values[val]}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%" (click)="submitForm(f.value, f)"> Submit </button>
+  </form>
+ 
+  <div *ngIf="taskName == 'submit_paper_again'"class="tableDiv">
+    <h3>*{{badFormatingMessage}}</h3>
+  </div>
+
+  <div *ngIf="taskName == 'author_making_decision' || taskName == 'pdf_correction'"class="tableDiv">
+    <table>
+      <th colspan="2" class="commentHead"><b>Komentari recezenata : </b></th>
+      <tr *ngFor="let review of reviews">
+        <td>{{review.user}} : </td>
+        <td>{{review.comment}}</td>
+      </tr>
+    </table>
+  </div>
+  
+
+  <div *ngIf="taskName == 'check_scientific_paper'" class = "tableDiv">
+    <table>
+      <tr>
+        <td>Title : </td>
+        <td>{{paper.title}}</td>
+      </tr>
+      <tr>
+        <td>Abstract description : </td>
+        <td>{{paper.abstractDesctiption}}</td>
+      </tr>
+      <tr>
+        <td>Scientific area : </td>
+        <td>{{paper.scientificArea}}</td>
+      </tr>
+      <tr>
+        <td>Keywords : </td>
+        <td>{{paper.keyWords}}</td>
+      </tr>
+      <tr>
+        <td>Coauthors : </td>
+        <td>{{paper.coAuthors}}</td>
+      </tr>
+      <tr>
+        <td>Text : </td>
+        <td>{{paper.pdfText}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div *ngIf="reviewerForm">
+  <div class="form-group">
+    <input type="text" [(ngModel)]="reviewerIds" class="form-control">
+    <button class="btn btn-primary" (click)="submitReviewers()"> Submit review</button>
+  </div>
+</div>

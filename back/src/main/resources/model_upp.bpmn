@@ -74,6 +74,7 @@
           <camunda:formField id="paperApproved" label="Paper approved" type="boolean" />
           <camunda:formField id="notRelevant" label="Not relevant" type="boolean" />
           <camunda:formField id="badFormating" label="Bad formating" type="boolean" />
+          <camunda:formField id="badFormatingExplaining" label="Bad formating exlaining" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0d4lqlf</bpmn:incoming>
@@ -105,14 +106,19 @@
     <bpmn:boundaryEvent id="BoundaryEvent_0ytpvl8" attachedToRef="Task_1knxngc">
       <bpmn:outgoing>SequenceFlow_09pe7dr</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P3D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_09pe7dr" sourceRef="BoundaryEvent_0ytpvl8" targetRef="Task_1ohrofk" />
     <bpmn:userTask id="Task_1knxngc" name="Submit paper again" camunda:assignee="${authorId}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="pdfContent" label="Pdf content" type="string" />
+          <camunda:formField id="title" label="Title" type="string" />
+          <camunda:formField id="abstractDescription" label="Abstract description" type="string" />
+          <camunda:formField id="scientificAreaId" label="Scientific area id" type="long" />
+          <camunda:formField id="keywords" label="Keywords" type="string" />
+          <camunda:formField id="coauthors" label="Coauthors" type="string" />
+          <camunda:formField id="pdfText" label="Text" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1sjnvwc</bpmn:incoming>
@@ -152,7 +158,7 @@
     <bpmn:boundaryEvent id="BoundaryEvent_0xdj6b8" attachedToRef="Task_0nz8gzv">
       <bpmn:outgoing>SequenceFlow_0heuxn0</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P3D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0heuxn0" sourceRef="BoundaryEvent_0xdj6b8" targetRef="Task_0bjguwm" />
@@ -206,7 +212,7 @@
     <bpmn:boundaryEvent id="BoundaryEvent_1ny8vxr" attachedToRef="pdf_correction">
       <bpmn:outgoing>SequenceFlow_0lxywa0</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P3D</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="EndEvent_12im1zi">
@@ -272,6 +278,30 @@
       <bpmn:outgoing>SequenceFlow_051ts96</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:sequenceFlow id="SequenceFlow_0boqsb6" sourceRef="Task_1sblyxf" targetRef="Task_10zo20g" />
+    <bpmn:userTask id="UserTask_0k01tw4" name="Scientific paper submission" camunda:assignee="${authorId}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="title" label="Title" type="string" />
+          <camunda:formField id="abstractDescription" label="Abstract description" type="string" />
+          <camunda:formField id="scientificAreaId" label="Scientific area " type="long" />
+          <camunda:formField id="keywords" label="Keywords" type="string" />
+          <camunda:formField id="coauthors" label="Coauthors" type="string" />
+          <camunda:formField id="pdfText" label="Pdf Text" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_1c3gn4z" name="Scientific paper submission" camunda:assignee="${authorId}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="title" label="Title" type="string" />
+          <camunda:formField id="abstractDescription" label="Abstract description" type="string" />
+          <camunda:formField id="scientificAreaId" label="Scientific area " type="long" />
+          <camunda:formField id="keywords" label="Keywords" type="string" />
+          <camunda:formField id="coauthors" label="Coauthors" type="string" />
+          <camunda:formField id="pdfText" label="Pdf Text" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="publishScientificPaper">
@@ -563,6 +593,12 @@
         <di:waypoint x="997" y="445" />
         <di:waypoint x="997" y="488" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0k01tw4_di" bpmnElement="UserTask_0k01tw4">
+        <dc:Bounds x="1762" y="583" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1c3gn4z_di" bpmnElement="UserTask_1c3gn4z">
+        <dc:Bounds x="1762" y="583" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

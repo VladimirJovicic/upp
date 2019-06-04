@@ -1,0 +1,13 @@
+td {
+        padding-left: 20px;
+}
+
+.tableDiv {
+    margin: auto;
+    display: table;
+    margin-top: 20px;
+}
+
+.commentHead{
+    text-align: center;
+}

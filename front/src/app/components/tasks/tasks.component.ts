@@ -35,7 +35,7 @@ export class TasksComponent implements OnInit {
       for (var property in this.form) {
         properties.push({fieldId : property, fieldValue : this.form[property]});
       }
-      
+      localStorage.setItem('taskName',data.taskName )
       localStorage.setItem('form', JSON.stringify(this.form));
       localStorage.setItem('taskId', this.taskID);
       console.log(this.form);

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -22,9 +23,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.udd.naucnacentrala.domain.ScientificArea;
 import com.udd.naucnacentrala.domain.User;
+import com.udd.naucnacentrala.repository.ScientificAreaRepository;
 import com.udd.naucnacentrala.service.UserService;
 import com.udd.naucnacentrala.web.dto.FormFieldsDto;
+import com.udd.naucnacentrala.web.dto.ReviewDTO;
+import com.udd.naucnacentrala.web.dto.ScientificPaperDTO;
+import com.udd.naucnacentrala.web.dto.StringDTO;
 import com.udd.naucnacentrala.web.dto.TaskDto;
 
 @RestController
@@ -42,6 +48,9 @@ public class TaskController {
 
 	@Autowired
 	FormService formService;
+	
+	@Autowired
+	ScientificAreaRepository scientificAreaRepository;
 
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllTasks(Principal principal) {
@@ -64,10 +73,13 @@ public class TaskController {
 		TaskFormData tfd = formService.getTaskFormData(taskId);
 
 		List<FormField> properties = tfd.getFormFields();
+		
+		String taskName = taskService.createTaskQuery().taskId(taskId).list().get(0).getName().toLowerCase().replace(" ", "_");
 
-		return new ResponseEntity<>(new FormFieldsDto(taskId, "publishScientificPaper", properties), HttpStatus.OK);
+		return new ResponseEntity<>(new FormFieldsDto(taskId, properties, "publishScientificPaper",taskName), HttpStatus.OK);
 	}
 
+	@SuppressWarnings("unchecked")
 	@PostMapping(path = "executeTask/{taskId}")
 	public ResponseEntity<?> executeTask(@RequestBody Map<String, Object> form, @PathVariable String taskId) {
 		System.out.println("TaskController.executeTask...Executing the task with id: " + taskId);
@@ -81,6 +93,25 @@ public class TaskController {
 			System.out.println("TaskController.executeTask...Task completed succesfully.");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		if (form.get("review") != null) {
+			List<ReviewDTO> listOfReviews =  new ArrayList<ReviewDTO>();
+			if(runtimeService.getVariable(task.getProcessInstanceId(), "reviews") == null) {
+				listOfReviews.add(new ReviewDTO(author.getEmail(), form.get("review").toString()));
+				runtimeService.setVariable(task.getProcessInstanceId(), "reviews", listOfReviews);
+			}else {
+				System.out.println("NIJE NULL I TREBA DODATI");
+				listOfReviews =  (List<ReviewDTO>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
+				listOfReviews.add(new ReviewDTO(author.getEmail(), form.get("review").toString()));
+				runtimeService.setVariable(task.getProcessInstanceId(), "reviews", listOfReviews);
+			}
+
+			/*System.out.println("Found review");
+			List<Map<String, Object>> reviews = (List<Map<String, Object>>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
+
+			System.out.println("Before adding");
+			reviews.add((Map<String, Object>) form.get("review"));
+			runtimeService.setVariable(task.getProcessInstanceId(), "reviews", reviews);*/
+		}
 
 		String processVariable = task.getName().toLowerCase().replace(" ", "_");
 		runtimeService.setVariable(task.getProcessInstanceId(),processVariable ,form);
@@ -93,7 +124,6 @@ public class TaskController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@SuppressWarnings("unchecked")
 	@PostMapping(path = "executeTaskReviewers/{taskId}")
 	public ResponseEntity<?> executeTaskReviewers(@RequestBody Map<String, Object> form, @PathVariable String taskId) {
 		System.out.println("TaskController.executeTaskReviewers...Executing the task with id: " + taskId);
@@ -101,21 +131,11 @@ public class TaskController {
 		System.out.println(form);
 
 		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-
 		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list()
 				.get(0);
 		if (task == null) {
 			System.out.println("TaskController.executeTask...Task completed succesfully.");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		if (form.get("review") != null) {
-			System.out.println("Found review");
-			List<Map<String, Object>> reviews = (List<Map<String, Object>>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
-
-			System.out.println("Before adding");
-			reviews.add((Map<String, Object>) form.get("review"));
-			runtimeService.setVariable(task.getProcessInstanceId(), "reviews", reviews);
 		}
 		
 		runtimeService.setVariables(task.getProcessInstanceId(), form);
@@ -123,5 +143,40 @@ public class TaskController {
 		System.out.println("TaskController.executeTaskReviewers...Task completed succesfully.");
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/getScientificPaper/{taskId}")
+	public ResponseEntity<ScientificPaperDTO> getScientificPaper(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		Optional<ScientificArea> areaName = scientificAreaRepository.findById(Long.valueOf(runtimeService.getVariable(task.getExecutionId(), "scientificAreaId").toString()));
+		return new ResponseEntity<ScientificPaperDTO>(
+					new ScientificPaperDTO(
+							runtimeService.getVariable(task.getExecutionId(), "title").toString(),
+							runtimeService.getVariable(task.getExecutionId(), "abstractDescription").toString(),
+							areaName.get().getScientificAreaName(),							
+							runtimeService.getVariable(task.getExecutionId(), "keywords").toString(),
+							runtimeService.getVariable(task.getExecutionId(), "coauthors").toString(),
+							runtimeService.getVariable(task.getExecutionId(), "pdfText").toString()
+							)
+					,HttpStatus.OK
+				);
+	}
+	
+	@GetMapping(value="getBadFormattingMessage/{taskId}")
+	public ResponseEntity<StringDTO> getBadFormattingMessage(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		return new ResponseEntity<StringDTO>(new StringDTO(runtimeService.getVariable(task.getExecutionId(), 
+				"badFormatingExplaining").toString()), HttpStatus.OK);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping(value="getReviews/{taskId}")
+	public ResponseEntity<List<ReviewDTO>> getReviews(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		List<ReviewDTO> reviews = (List<ReviewDTO>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
+		return new ResponseEntity<List<ReviewDTO>>(reviews, HttpStatus.OK);
 	}
 }

@@ -8,15 +8,17 @@ public class FormFieldsDto {
     String taskId;
     List<FormField> formFields;
     String processInstanceId;
+    String taskName;
 
-    public FormFieldsDto(String taskId, String processInstanceId, List<FormField> formFields) {
-        super();
-        this.taskId = taskId;
-        this.formFields = formFields;
-        this.processInstanceId = processInstanceId;
-    }
+    public FormFieldsDto(String taskId, List<FormField> formFields, String processInstanceId, String taskName) {
+		super();
+		this.taskId = taskId;
+		this.formFields = formFields;
+		this.processInstanceId = processInstanceId;
+		this.taskName = taskName;
+	}
 
-    public FormFieldsDto() {}
+	public FormFieldsDto() {}
 
     public String getTaskId() {
         return taskId;
@@ -41,5 +43,21 @@ public class FormFieldsDto {
     public void setProcessInstanceId(String processInstanceId) {
         this.processInstanceId = processInstanceId;
     }
+
+	@Override
+	public String toString() {
+		return "FormFieldsDto [taskId=" + taskId + ", formFields=" + formFields + ", processInstanceId="
+				+ processInstanceId + ", taskName=" + taskName + "]";
+	}
+
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+    
+    
 
 }

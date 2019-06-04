@@ -23,5 +23,17 @@ export class TasksService {
   executeTaskReviewers(formValue : any, taskId: string): any {
     return this.httpClient.post(this.url + '/executeTaskReviewers/' + taskId, formValue);
   }
-  
+
+  getScientificPaper(taskId: string) {
+    return this.httpClient.get(this.url + '/getScientificPaper/'+ taskId);
+  }
+
+  getBadFormattingMessage(taskId: string) {
+    return this.httpClient.get(this.url + '/getBadFormattingMessage/'+ taskId);
+  }
+
+  getReviews(taskId: string){
+    return this.httpClient.get(this.url + '/getReviews/'+ taskId);
+  }
+
 }
