@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="panel panel-primary" *ngFor = "let m of magazines"> 
+    <div class="panel-heading">
+      <h3 class="panel-title"> {{(m.name)}} </h3>
+    </div>
+    <div class="panel-body">
+     
+      <div *ngIf="m.id % 2 != 0"> <img  style="max-width: 20%;" src="assets/images/nature.jpg" align="right"></div>
+      <div *ngIf="m.id % 2 === 0"> <img  style="max-width: 15%;" src="assets/images/math.jpg" align="right"></div>
+     
+      
+      <p> <strong> ISSN: </strong> {{(m.issn)}} </p>
+      <p> <strong> Payment type:  </strong>{{m.paymentType}} </p>
+      <p> <strong> Reviewers: </strong> </p><p *ngFor="let r of m.reviewers"> {{r.firstName}} {{r.lastName}} </p>
+      <p> <strong> Editors of specific areas: </strong> </p><p *ngFor="let e of m.editorsOfSpecificAreas"> {{e.firstName}} {{e.lastName}} </p>
+      <p> <strong> Scientific Areas: </strong> </p><p *ngFor="let s of m.scientificAreas"> {{s.scientificAreaName}} </p>
+
+
+      <p> <strong> Price : </strong> {{m.price | currency}}  </p>
+      
+      <br/>
+
+      <button class="btn btn-success btn-block" stlye="width: 150px;" (click)="publishPaper(m.id)"> Publish scientific paper </button> 
+      
+    </div>
+     
+  </div>
+</div>

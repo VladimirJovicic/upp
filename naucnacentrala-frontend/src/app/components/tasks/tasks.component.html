@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="panel panel-primary" *ngFor="let t of tasks"> 
+      <div class="panel-heading">
+        <h3 class="panel-title"> {{(t.name)}} </h3>
+      </div>
+      <div class="panel-body">       
+        
+        <p> <strong> Id taska: </strong> {{t.id}} </p>
+        <p> <strong> Magazin id:  </strong> {{t.magazineId}} </p>
+        <p> <strong> Magazin naslov:  </strong> {{t.magazineName}} </p>
+  
+        <button class="btn btn-success btn-block" stlye="width: 150px;" (click)="executeTask(t.id)"> Execute task </button> 
+        
+      </div>
+       
+    </div>
+  </div>

@@ -1,0 +1,244 @@
+<div class="container">
+      <h3> Please enter search criteria: </h3>
+      <hr>
+      <form (ngSubmit)="onSearchSubmit(f)" #f="ngForm">
+
+        <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="magazine"> Magazine: </label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="magazine" name="magazine" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="magazineOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="magazineOptional" name="magazineOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="magazinePhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="magazinePhrase" name="magazinePhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="title">Title</label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="title" name="title" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="titleOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="titleOptional" name="titleOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="titlePhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="titlePhrase" name="titlePhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="author"> Author: </label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="author" name="author" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="authorOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="authorOptional" name="authorOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="authorPhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="authorPhrase" name="authorPhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="keywords"> Keywords: </label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="keywords" name="keywords" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="keywordsOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="keywordsOptional" name="keywordsOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="keywordsPhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="keywordsPhrase" name="keywordsPhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="content"> Content: </label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="content" name="content" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="contentOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="contentOptional" name="contentOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="contentPhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="contentPhrase" name="contentPhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group">
+
+            <label class="col-lg-2" for="scientificArea"> Scientific areas: </label>
+            <div class="col-lg-4">
+              <input class="form-control" type="text" id="scientificArea" name="scientificArea" ngModel>
+            </div>
+            
+            <label class="col-lg-2" style="text-align: center" for="scientificAreaOptional"> Optional? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="scientificAreaOptional" name="scientificAreaOptional" ngModel>
+            </div>
+
+            <label class="col-lg-2" style="text-align: center" for="scientificAreaPhrase"> Phrase query? </label>  
+            <div class="col-lg-1">
+              <input class="form-control" type="checkbox" id="scientificAreaPhrase" name="scientificAreaPhrase" ngModel>
+            </div>
+
+          </div>
+      </div>
+
+      <br/>
+      <button class="btn btn-block btn-success" type="submit"> Search </button>
+      </form>
+
+      <br/>
+      <hr/>
+      <h3> Results: </h3>
+      <br/>
+
+      <table class="table table-hover table-bordered">
+          <thead>
+              <tr>
+                <th class="col-md-1">Magazine</th>
+                <th class="col-md-1">Title</th>
+                <th class="col-md-1">Author</th>
+                <th class="col-md-1">Keywords</th>
+                <th style="text-align: center;" class="col-md-4">Content</th>
+                <th style="text-align: center;" class="col-md-2">Scientific area</th>
+                <th class="col-md-1">Geo/More like this</th>
+                <th class="col-md-1">Download/Pay</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sp of scientificPapers; let i = index">
+                <td>{{sp.magazine}}</td>
+                <td> <div [innerHtml]="sp.title"></div> </td>
+                <td>{{sp.author}}</td>
+                <td> <div [innerHtml]="sp.keywords"></div> </td>
+                <td> <div style="width:100%;overflow:scroll;height:70px;line-height:70px;" [innerHtml]="sp.pdfText"></div> </td>
+                <td style="text-align: center;" >{{sp.scientificArea}}</td>
+                <td> <button class="btn btn-info" style="width: 100%" (click)="geoSearch(sp.location, sp.id)"> Geo search </button>
+                     <button class="btn btn-warning" style="width: 100%" (click)="moreLikeThis(sp.id)"> More like this </button> </td>
+                <td> <button *ngIf="sp.price === 0" class="btn btn-primary" style="width: 100%" (click)="download(sp.title)"> Download </button>
+                  <button *ngIf="sp.price !== 0" class="btn btn-success" style="width: 100%" (click)="buy(sp.title)"> Buy </button> </td>
+              </tr>
+            </tbody>
+      </table>
+      <br/>
+      <hr/>
+
+      <div *ngIf="this.moreLikeThisData">
+      <h3> More like this results: </h3>
+        <table class="table table-hover table-bordered">
+          <thead>
+              <tr>
+                <th class="col-md-1">Magazine</th>
+                <th class="col-md-1">Title</th>
+                <th class="col-md-1">Author</th>
+                <th class="col-md-1">Keywords</th>
+                <th style="text-align: center;" class="col-md-4">Content</th>
+                <th style="text-align: center;" class="col-md-2">Scientific area</th>
+                <th class="col-md-1">Reviewers</th>
+                <th class="col-md-1">Download/Pay</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sp of moreLikeThisData; let i = index">
+                <td>{{sp.magazine}}</td>
+                <td> <div [innerHtml]="sp.title"></div> </td>
+                <td>{{sp.author}}</td>
+                <td> <div [innerHtml]="sp.keywords"></div> </td>
+                <td> <div style="width:100%;overflow:scroll;height:70px;line-height:70px;" [innerHtml]="sp.pdfText"></div> </td>
+                <td style="text-align: center;" >{{sp.scientificArea}}</td>
+                <td> <div *ngFor="let r of sp.reviewers"> <p> {{r.firstName}} {{r.lastName}}   </p>  </div> </td>
+                <td> <button *ngIf="sp.price === 0" class="btn btn-primary" style="width: 100%" (click)="download(sp.title)"> Download </button>
+                  <button *ngIf="sp.price !== 0" class="btn btn-success" style="width: 100%" (click)="buy(sp.title)"> Buy </button> </td>
+              </tr>
+            </tbody>
+      </table>
+    </div>
+
+    <br/>
+    <hr/>
+
+    <div *ngIf="this.geoPointData">
+    <h3> Geo point results: </h3>
+      <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+              <th class="col-md-1">Magazine</th>
+              <th class="col-md-1">Title</th>
+              <th class="col-md-1">Author</th>
+              <th class="col-md-1">Keywords</th>
+              <th style="text-align: center;" class="col-md-4">Content</th>
+              <th style="text-align: center;" class="col-md-2">Scientific area</th>
+              <th class="col-md-1">Geo/More like this</th>
+              <th class="col-md-1">Download/Pay</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sp of geoPointData; let i = index">
+              <td>{{sp.magazine}}</td>
+              <td> <div [innerHtml]="sp.title"></div> </td>
+              <td>{{sp.author}}</td>
+              <td> <div [innerHtml]="sp.keywords"></div> </td>
+              <td> <div style="width:100%;overflow:scroll;height:70px;line-height:70px;" [innerHtml]="sp.pdfText"></div> </td>
+              <td style="text-align: center;" >{{sp.scientificArea}}</td>
+              <td> </td>
+              <td> <button *ngIf="sp.price === 0" class="btn btn-primary" style="width: 100%" (click)="download(sp.title)"> Download </button>
+                <button *ngIf="sp.price !== 0" class="btn btn-success" style="width: 100%" (click)="buy(sp.title)"> Buy </button> </td>
+            </tr>
+          </tbody>
+    </table>
+  </div>
+  
+  <br/>
+  <hr/>
+</div>
+
+

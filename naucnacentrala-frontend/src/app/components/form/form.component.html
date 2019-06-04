@@ -1,0 +1,26 @@
+<div *ngIf="!reviewerForm">
+<form #f="ngForm">
+  <div *ngFor="let field of form"> 
+    <div class="form-group">
+      <label for="{{field.id}}">{{field.label}}</label>
+  
+      <input type="text" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='string'" >
+      <input type="checkbox" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='boolean'">
+      <input type="number" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='long'">
+      <select name="field.id" *ngIf="field.type.name=='enum'">
+        <option *ngFor="let val of enumValues" value={{val}}>
+          {{field.type.values[val]}}
+        </option>
+      </select>
+    </div>
+  </div>
+    <button class="btn btn-primary" style="width:100%" (click)="submitForm(f.value, f)"> Submit </button>
+  
+  </form>
+</div>
+<div *ngIf="reviewerForm">
+    <div class="form-group">
+      <input type="text" [(ngModel)]="reviewerIds" class="form-control">
+      <button class="btn btn-primary" (click)="submitReviewers()"> Submit </button>
+    </div>
+</div>
