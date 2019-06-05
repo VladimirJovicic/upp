@@ -1,5 +1,6 @@
 package com.udd.naucnacentrala.service.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,6 @@ public class UserServiceImpl implements UserService {
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
 	}
+
+
 }

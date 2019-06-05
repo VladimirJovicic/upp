@@ -60,121 +60,18 @@ public class DataLoader implements ApplicationRunner {
 	@Autowired
 	private AuthoritiesRepository authoritiesRepository;
 	
-//	@Autowired
-//	private ScientificPaperElasticSearchRepository elasticRepository;
-//	
-//	@Autowired
-//	private ElasticsearchTemplate est;
-	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		
-		
 		insertIntoScientificArea();
 		insertIntoUser();
 		insertIntoMagazine();
 		insertIntoScientificPaper();
 		insertIntoSubscription();
-//		insertIntoPaymentRecord();		
-//      parsePDFandInsertIntoElasticSearchServer();
 	}
-
-//private void parsePDFandInsertIntoElasticSearchServer() {
-//		
-//		Long id = 0l;
-//		try {
-//			File folder = new File("src/main/java/com/udd/naucnacentrala/elasticsearch");
-//			File[] listOfFiles = folder.listFiles();
-//			System.out.println("Parsing of PDF files...");
-//			
-//			for (File file : listOfFiles) {
-//			    if (file.isFile() && file.getName().endsWith(".pdf")) {
-//			        
-//			    	ScientificPaperIndexUnit retVal = new ScientificPaperIndexUnit();
-//					PDFParser parser = new PDFParser(new RandomAccessFile(file, "r"));
-//					parser.parse();
-//					String text = getText(parser);  
-//					retVal.setPdfText(text);
-//
-//					// metadata extraction
-//					PDDocument pdf = parser.getPDDocument();
-//					PDDocumentInformation info = pdf.getDocumentInformation();
-//
-//					String title = "" + info.getTitle();
-//					retVal.setTitle(title);
-//					
-//					String keywords = "" + info.getKeywords();
-//					retVal.setKeywords(keywords);
-//					
-//					String author = "" + info.getAuthor();
-//					retVal.setAuthor(author);
-//					
-//					String abstractDescription = "" + info.getSubject();
-//					retVal.setAbstractDescription(abstractDescription);
-//					
-//					List<UserElasticSearchDTO> coAuthors = new ArrayList<UserElasticSearchDTO>();
-//					
-//					coAuthors.add(new UserElasticSearchDTO("ivan", "ivanovic", "ivan@gmail.com"));
-//					coAuthors.add(new UserElasticSearchDTO("marko", "markovic", "marko@gmail.com"));
-//
-//					List<UserElasticSearchDTO> reviewers = new ArrayList<UserElasticSearchDTO>();
-//					
-//					reviewers.add(new UserElasticSearchDTO("milica", "krepic", "mil@gmail.com"));
-//					reviewers.add(new UserElasticSearchDTO("nemanja", "ciric", "nem@gmail.com"));
-//					
-//					Set<User> coAuthors1 = new HashSet<User>();
-//					
-//					coAuthors1.add(userRepository.getOne(2l));
-//					
-//					retVal.setId(id);
-//					retVal.setCoAuthors(coAuthors);
-//					retVal.setReviewers(reviewers);
-//					retVal.setMagazine(title);
-//				
-//					if(id.equals(0l)) { // koordinate sajma
-//						retVal.setLocation(new GeoPoint(45.258188, 19.822986));
-//						retVal.setPrice(0d);
-//						retVal.setScientificArea("Construction");
-//						retVal.setOpenAccess(true);
-//					} else if(id.equals(1l)) {  // koordinate hotela sajam 400 m daleko od sajma
-//						retVal.setLocation(new GeoPoint(45.254282, 19.819469));
-//						retVal.setPrice(0d);
-//						retVal.setScientificArea("Construction");
-//						retVal.setOpenAccess(true);
-//					} else if(id.equals(2l)) { // koordinate beogradske kapije na petrovaradinu 3km daleko od sajma
-//						retVal.setLocation(new GeoPoint(45.254482, 19.864243));
-//						retVal.setPrice(0d);
-//						retVal.setScientificArea("Medicine");
-//						retVal.setOpenAccess(true);
-//					} else {
-//						retVal.setLocation(new GeoPoint(50.258188, 19.822982));
-//						retVal.setPrice(150d);
-//						retVal.setScientificArea("Medicine");
-//						retVal.setOpenAccess(false);
-//					}
-//					
-//					id++;
-//					
-//					elasticRepository.save(retVal);
-//					scientificPaperRepository.save(new ScientificPaper(retVal.getId(), retVal.getTitle(), retVal.getKeywords(),
-//							retVal.getAbstractDescription(), retVal.getPdfText(), coAuthors1, scientificAreaRepository.getOne(1l), userRepository.getOne(1l), magazineRepository.getOne(1l)));
-//					
-//					pdf.close();
-//			    }
-//			}
-//			
-//			System.out.println("Parsing of PDF files succesfully finished.");
-//			
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.out.println("Greksa pri konvertovanju dokumenta u pdf");
-//		}
-//
-//	}
 
 	public static String getText(PDFParser parser) {
 		try {
@@ -224,7 +121,7 @@ public class DataLoader implements ApplicationRunner {
 		subscriptionRepository.save(s2);
 		
 	}
-
+	
 	private void insertIntoPaymentRecord() {
 
 		PaymentRecord pr1 = new PaymentRecord();
@@ -290,6 +187,7 @@ public class DataLoader implements ApplicationRunner {
 		u1.setLastName("Autor");
 		u1.setState("Srbija");
 		u1.setTitle("Dr mr");
+		
 		
 		List<Authority> authorities = new ArrayList<Authority>();
 		
@@ -391,13 +289,13 @@ public class DataLoader implements ApplicationRunner {
 		u5.setTitle(null);
 		u5.setScientificAreas(null);
 		
-		List<Authority> authorities5 = new ArrayList<Authority>();
-		Authority a5 = new Authority();
-		a5.setName(UserRole.REVIEWER);
-		authoritiesRepository.save(a5);
-		
-		authorities4.add(authoritiesRepository.getOne(5l));
-		u5.setAuthorities(authorities5);
+		/*
+		 * List<Authority> authorities5 = new ArrayList<Authority>(); Authority a5 = new
+		 * Authority(); a5.setName(UserRole.REVIEWER); authoritiesRepository.save(a5);
+		 * 
+		 * authorities4.add(authoritiesRepository.getOne(5l));
+		 */
+		u5.setAuthorities(authorities4);
 		
 		userRepository.save(u5);
 		

@@ -17,6 +17,11 @@ export class FormComponent implements OnInit {
   paper: any = {};
   badFormatingMessage: string;
   reviews: any = [];
+  smallOrBigChangesFeedback: any = {};
+  pdfText: string;
+  enumValues: any = [];
+  reviewers: any = [];
+  selectedReviewers: Array<{}> = [];
 
   constructor(private taskService:TasksService,
               private router: Router) { }
@@ -33,6 +38,19 @@ export class FormComponent implements OnInit {
 
     if(this.taskName == 'author_making_decision' || this.taskName == 'pdf_correction') {
       this.getReviews();
+      this.getBigOrSmallChangeFeedback();
+    }
+
+    if(this.taskName == 'final_decision' || this.taskName == 'reviewing_process' || this.taskName == 'author_making_decision') {
+      this.getPdfText();
+    }
+
+    if(this.taskName == 'scientific_paper_submission') {
+      this.getScientificAreas();
+    }
+
+    if(this.taskName == 'choose_reviewers') {
+      this.getReviewers();
     }
     
     var retrievedObject = localStorage.getItem('form');
@@ -40,7 +58,24 @@ export class FormComponent implements OnInit {
     if(this.form[0].id === 'reviewerId') {
       this.reviewerForm = true;
     }
+
     this.taskId = localStorage.getItem('taskId');
+  }
+
+  getScientificAreas() {
+    this.taskService.getScientificAreas().subscribe(
+      (data:any)=> {
+        this.enumValues = data;
+      }
+    )
+  }
+
+  getReviewers() {
+    this.taskService.getReviewers().subscribe(
+      (data:any)=> {
+        this.reviewers = data;
+      }
+    )
   }
 
   getScientificPaper() {
@@ -55,7 +90,14 @@ export class FormComponent implements OnInit {
     this.taskService.getBadFormattingMessage(localStorage.getItem('taskId')).subscribe(
       (data:any)=>{
         this.badFormatingMessage = data.message;
-        console.log(data)
+      }
+    )
+  }
+
+  getPdfText() {
+    this.taskService.getPdfText(localStorage.getItem('taskId')).subscribe(
+      (data:any)=>{
+        this.pdfText = data.message;
       }
     )
   }
@@ -64,6 +106,14 @@ export class FormComponent implements OnInit {
     this.taskService.getReviews (localStorage.getItem('taskId')).subscribe(
       (data:any)=>{
         this.reviews = data;
+      }
+    )
+  }
+
+  getBigOrSmallChangeFeedback(){
+    this.taskService.getBigOrSmallChangeFeedback(localStorage.getItem('taskId')).subscribe(
+      (data:any)=>{
+        this.smallOrBigChangesFeedback = data.message;
       }
     )
   }
@@ -79,15 +129,22 @@ export class FormComponent implements OnInit {
     )
   }
 
-  submitReviewers() {
-    console.log('Reviewer ids: ');
-    console.log(this.reviewerIds);
-    console.log('Reviewer ids after split: ');
-    console.log(this.reviewerIds.split(','));
-    console.log('Reviewer ids after json stringify: ');
-    console.log(JSON.stringify(this.reviewerIds.split(',')))
+  addOrRemove(reviwer:any, event){
+    console.log(event.target.checked);
+    if(event.target.checked == true) {
+      this.selectedReviewers.push(reviwer.id+"");
+    }else { 
+      for(var i = 0; i < this.selectedReviewers.length; i++) {
+        if(this.selectedReviewers[i]+"" == reviwer.id+"") {
+          this.selectedReviewers.splice(i,1); 
+        }
+      }
+    }
+    console.log(this.selectedReviewers);
+  }
 
-    let body = { reviewers: this.reviewerIds.split(',')}
+  submitReviewers() {
+    let body = { reviewers: this.selectedReviewers}
     this.taskService.executeTaskReviewers(body, this.taskId)
       .subscribe( (res: any) => {
         console.log('Succesfully executed executeTaskReviewers.');

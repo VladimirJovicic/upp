@@ -23,15 +23,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.udd.naucnacentrala.domain.Authority;
 import com.udd.naucnacentrala.domain.ScientificArea;
 import com.udd.naucnacentrala.domain.User;
+import com.udd.naucnacentrala.domain.UserRole;
 import com.udd.naucnacentrala.repository.ScientificAreaRepository;
+import com.udd.naucnacentrala.repository.UserRepository;
 import com.udd.naucnacentrala.service.UserService;
 import com.udd.naucnacentrala.web.dto.FormFieldsDto;
 import com.udd.naucnacentrala.web.dto.ReviewDTO;
+import com.udd.naucnacentrala.web.dto.ScientificAreaDTO;
 import com.udd.naucnacentrala.web.dto.ScientificPaperDTO;
 import com.udd.naucnacentrala.web.dto.StringDTO;
 import com.udd.naucnacentrala.web.dto.TaskDto;
+import com.udd.naucnacentrala.web.dto.UserDTO;
 
 @RestController
 @RequestMapping(value = "/api/task")
@@ -39,6 +44,9 @@ public class TaskController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private RuntimeService runtimeService;
@@ -104,13 +112,6 @@ public class TaskController {
 				listOfReviews.add(new ReviewDTO(author.getEmail(), form.get("review").toString()));
 				runtimeService.setVariable(task.getProcessInstanceId(), "reviews", listOfReviews);
 			}
-
-			/*System.out.println("Found review");
-			List<Map<String, Object>> reviews = (List<Map<String, Object>>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
-
-			System.out.println("Before adding");
-			reviews.add((Map<String, Object>) form.get("review"));
-			runtimeService.setVariable(task.getProcessInstanceId(), "reviews", reviews);*/
 		}
 
 		String processVariable = task.getName().toLowerCase().replace(" ", "_");
@@ -178,5 +179,73 @@ public class TaskController {
 		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
 		List<ReviewDTO> reviews = (List<ReviewDTO>) runtimeService.getVariable(task.getProcessInstanceId(), "reviews");
 		return new ResponseEntity<List<ReviewDTO>>(reviews, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="getBigOrSmallChangeFeedback/{taskId}")
+	public ResponseEntity<StringDTO> getBigOrSmallChangeFeedback(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		
+		if(runtimeService.getVariable(task.getProcessInstanceId(), "small_changes") == null) {
+			System.out.println("Small changes je null");
+		}else {
+			System.out.println("Small changes nije null");
+		}
+		
+		if(runtimeService.getVariable(task.getProcessInstanceId(), "big_changes") == null) {
+			System.out.println("Big changes je null");
+		}else {
+			System.out.println("Big changes nije null");
+		}
+		
+		String message = "";
+		if(runtimeService.getVariable(task.getProcessInstanceId(), "small_changes") != null &&
+			runtimeService.getVariable(task.getProcessInstanceId(), "small_changes").equals(true)) {
+			message = "Small changes: " + runtimeService.getVariable(task.getProcessInstanceId(), "explain_small_change").toString();
+		}
+		if(runtimeService.getVariable(task.getProcessInstanceId(), "big_changes") != null &&
+			runtimeService.getVariable(task.getProcessInstanceId(), "big_changes").equals(true)) {
+			message = "Big changes: " + runtimeService.getVariable(task.getProcessInstanceId(), "explain_big_change").toString();
+		}
+		
+		return new ResponseEntity<StringDTO>(new StringDTO(message), HttpStatus.OK);
+	}
+	
+	@GetMapping(value="getPdfText/{taskId}")
+	public ResponseEntity<StringDTO> getPdfText(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		
+		String message = runtimeService.getVariable(task.getProcessInstanceId(), "pdfText").toString();
+		
+		return new ResponseEntity<StringDTO>(new StringDTO(message), HttpStatus.OK);
+	}
+	
+	@GetMapping(value="getScientificAreas")
+	public ResponseEntity<List<ScientificAreaDTO>> getScientificAreas() {
+		List<ScientificArea> listOfAreas = scientificAreaRepository.findAll();
+		List<ScientificAreaDTO> listOfDtoAreas = new ArrayList<ScientificAreaDTO>();
+		for(ScientificArea area : listOfAreas) {
+			listOfDtoAreas.add(new ScientificAreaDTO(area.getId(), area.getScientificAreaName()));
+		}
+		return new ResponseEntity<List<ScientificAreaDTO>>(listOfDtoAreas, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="getReviewers")
+	public ResponseEntity<List<UserDTO>> getReviewers() {
+		List<UserDTO> retVal = new ArrayList<UserDTO>();
+		
+		List<User> allUsers = userRepository.findAll();
+		for(User user: allUsers) {
+			for(Authority a : user.getAuthorities()) {
+				if(a.getName().equals(UserRole.EDITOR) || a.getName().equals(UserRole.REVIEWER)) {
+					 UserDTO dto = new  UserDTO();
+					 dto.setEmail(user.getEmail());
+					 dto.setId(user.getId());
+					 retVal.add(dto);
+				}
+			}
+		}
+		return new ResponseEntity<List<UserDTO>>(retVal, HttpStatus.OK);
 	}
 }

@@ -54,7 +54,11 @@
         <camunda:formData>
           <camunda:formField id="title" label="Title" type="string" />
           <camunda:formField id="abstractDescription" label="Abstract description" type="string" />
-          <camunda:formField id="scientificAreaId" label="Scientific area " type="long" />
+          <camunda:formField id="scientificAreaId" label="Scientific area " type="enum">
+            <camunda:value id="w" name="qwe" />
+            <camunda:value id="e" name="eeee" />
+            <camunda:value id="ff" name="ffffff" />
+          </camunda:formField>
           <camunda:formField id="keywords" label="Keywords" type="string" />
           <camunda:formField id="coauthors" label="Coauthors" type="string" />
           <camunda:formField id="pdfText" label="Pdf Text" type="string" />
@@ -173,7 +177,9 @@
         <camunda:formData>
           <camunda:formField id="approved" label="Approved" type="boolean" />
           <camunda:formField id="small_changes" label="Small changes" type="boolean" />
-          <camunda:formField id="big_changes" label="Big changes" type="boolean" />
+          <camunda:formField id="explain_small_change" label="Explain small change" type="string" />
+          <camunda:formField id="big_changes" label="Big change" type="boolean" />
+          <camunda:formField id="explain_big_change" label="Explain Big Change" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1bdpdnx</bpmn:incoming>
@@ -182,16 +188,12 @@
     </bpmn:userTask>
     <bpmn:sendTask id="Task_1pjm9hc" name="Sending notification to author that the paper is approved" camunda:class="com.udd.naucnacentrala.delegate.SendSuccessEmail">
       <bpmn:incoming>SequenceFlow_1xuxaar</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0ot8ga1</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0hpbbzt</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:sendTask id="Task_0fz38vt" name="Sending mail to author that is conditionally approved with changes" camunda:class="com.udd.naucnacentrala.delegate.SendConditionallyApprovedMail">
       <bpmn:incoming>SequenceFlow_1w8p2uk</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_10qeo51</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:endEvent id="EndEvent_0q2vt92">
-      <bpmn:incoming>SequenceFlow_0ot8ga1</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0ot8ga1" sourceRef="Task_1pjm9hc" targetRef="EndEvent_0q2vt92" />
     <bpmn:sequenceFlow id="SequenceFlow_1xuxaar" sourceRef="Task_1ggdged" targetRef="Task_1pjm9hc">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${approved=="true"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -247,6 +249,7 @@
           <camunda:formField id="accept" label="Accept" type="boolean" />
           <camunda:formField id="reject" label="Reject" type="boolean" />
           <camunda:formField id="change" label="Change pdf content" type="boolean" />
+          <camunda:formField id="explain_small_change" label="Objsniti : " type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1uofetg</bpmn:incoming>
@@ -260,22 +263,16 @@
     <bpmn:sequenceFlow id="SequenceFlow_0kvrdre" sourceRef="Task_1xb279z" targetRef="Task_0gypwwn">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${reject=="true"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:endEvent id="EndEvent_1f18qh3">
-      <bpmn:incoming>SequenceFlow_1arbbq0</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1arbbq0" sourceRef="Task_0gypwwn" targetRef="EndEvent_1f18qh3" />
     <bpmn:sendTask id="Task_0gypwwn" name="Send rejected paper mail" camunda:class="com.udd.naucnacentrala.delegate.SendFailureEmail">
       <bpmn:incoming>SequenceFlow_0kvrdre</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1arbbq0</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0x5gki4</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="SequenceFlow_04664ds" sourceRef="Task_1xb279z" targetRef="Task_0dvrekr" />
-    <bpmn:endEvent id="EndEvent_1gbe5xw">
-      <bpmn:incoming>SequenceFlow_051ts96</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_051ts96" sourceRef="Task_0dvrekr" targetRef="EndEvent_1gbe5xw" />
+    <bpmn:sequenceFlow id="SequenceFlow_04664ds" sourceRef="Task_1xb279z" targetRef="Task_0dvrekr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">{accept == "true"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:sendTask id="Task_0dvrekr" name="Send accepted paper mail" camunda:class="com.udd.naucnacentrala.delegate.SendSuccessEmail">
       <bpmn:incoming>SequenceFlow_04664ds</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_051ts96</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1fmfb6y</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:sequenceFlow id="SequenceFlow_0boqsb6" sourceRef="Task_1sblyxf" targetRef="Task_10zo20g" />
     <bpmn:userTask id="UserTask_0k01tw4" name="Scientific paper submission" camunda:assignee="${authorId}">
@@ -302,6 +299,21 @@
         </camunda:formData>
       </bpmn:extensionElements>
     </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1fmfb6y" sourceRef="Task_0dvrekr" targetRef="Task_13cpy5h" />
+    <bpmn:sequenceFlow id="SequenceFlow_0hpbbzt" sourceRef="Task_1pjm9hc" targetRef="Task_13cpy5h" />
+    <bpmn:endEvent id="EndEvent_08sayp0">
+      <bpmn:incoming>SequenceFlow_10pii2u</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_10pii2u" sourceRef="Task_13cpy5h" targetRef="EndEvent_08sayp0" />
+    <bpmn:endEvent id="EndEvent_0emljx6">
+      <bpmn:incoming>SequenceFlow_0x5gki4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0x5gki4" sourceRef="Task_0gypwwn" targetRef="EndEvent_0emljx6" />
+    <bpmn:serviceTask id="Task_13cpy5h" name="Adding paper to database" camunda:class="com.udd.naucnacentrala.delegate.AddingPaperToDatabase">
+      <bpmn:incoming>SequenceFlow_1fmfb6y</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0hpbbzt</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_10pii2u</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="publishScientificPaper">
@@ -489,13 +501,6 @@
       <bpmndi:BPMNShape id="SendTask_0rg2m7x_di" bpmnElement="Task_0fz38vt">
         <dc:Bounds x="356" y="907" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_0q2vt92_di" bpmnElement="EndEvent_0q2vt92">
-        <dc:Bounds x="691" y="802" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0ot8ga1_di" bpmnElement="SequenceFlow_0ot8ga1">
-        <di:waypoint x="651" y="820" />
-        <di:waypoint x="691" y="820" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1xuxaar_di" bpmnElement="SequenceFlow_1xuxaar">
         <di:waypoint x="601" y="907" />
         <di:waypoint x="601" y="860" />
@@ -512,21 +517,22 @@
         <dc:Bounds x="356" y="725" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BoundaryEvent_0654k75_di" bpmnElement="BoundaryEvent_1ny8vxr">
-        <dc:Bounds x="438" y="707" width="36" height="36" />
+        <dc:Bounds x="338" y="787" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_12im1zi_di" bpmnElement="EndEvent_12im1zi">
-        <dc:Bounds x="691" y="707" width="36" height="36" />
+        <dc:Bounds x="241" y="977" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0lxywa0_di" bpmnElement="SequenceFlow_0lxywa0">
-        <di:waypoint x="474" y="725" />
-        <di:waypoint x="551" y="725" />
+        <di:waypoint x="338" y="805" />
+        <di:waypoint x="284" y="805" />
+        <di:waypoint x="284" y="864" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_15k7x09_di" bpmnElement="SequenceFlow_15k7x09">
-        <di:waypoint x="651" y="725" />
-        <di:waypoint x="691" y="725" />
+        <di:waypoint x="259" y="947" />
+        <di:waypoint x="259" y="977" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="SendTask_1glnxqu_di" bpmnElement="Task_1txrzyp">
-        <dc:Bounds x="551" y="685" width="100" height="80" />
+        <dc:Bounds x="209" y="867" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0nzpz02_di" bpmnElement="SequenceFlow_0nzpz02">
         <di:waypoint x="356" y="765" />
@@ -561,33 +567,19 @@
         <di:waypoint x="406" y="725" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0kvrdre_di" bpmnElement="SequenceFlow_0kvrdre">
+        <di:waypoint x="406" y="539" />
+        <di:waypoint x="406" y="461" />
+        <di:waypoint x="537" y="461" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SendTask_0497eid_di" bpmnElement="Task_0gypwwn">
+        <dc:Bounds x="537" y="421" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_04664ds_di" bpmnElement="SequenceFlow_04664ds">
         <di:waypoint x="456" y="579" />
         <di:waypoint x="551" y="579" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_1f18qh3_di" bpmnElement="EndEvent_1f18qh3">
-        <dc:Bounds x="691" y="561" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1arbbq0_di" bpmnElement="SequenceFlow_1arbbq0">
-        <di:waypoint x="651" y="579" />
-        <di:waypoint x="691" y="579" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="SendTask_0497eid_di" bpmnElement="Task_0gypwwn">
-        <dc:Bounds x="551" y="539" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_04664ds_di" bpmnElement="SequenceFlow_04664ds">
-        <di:waypoint x="406" y="539" />
-        <di:waypoint x="406" y="461" />
-        <di:waypoint x="551" y="461" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_1gbe5xw_di" bpmnElement="EndEvent_1gbe5xw">
-        <dc:Bounds x="691" y="443" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_051ts96_di" bpmnElement="SequenceFlow_051ts96">
-        <di:waypoint x="651" y="461" />
-        <di:waypoint x="691" y="461" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="SendTask_1dw2zh4_di" bpmnElement="Task_0dvrekr">
-        <dc:Bounds x="551" y="421" width="100" height="80" />
+        <dc:Bounds x="551" y="539" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0boqsb6_di" bpmnElement="SequenceFlow_0boqsb6">
         <di:waypoint x="997" y="445" />
@@ -598,6 +590,31 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_1c3gn4z_di" bpmnElement="UserTask_1c3gn4z">
         <dc:Bounds x="1762" y="583" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1fmfb6y_di" bpmnElement="SequenceFlow_1fmfb6y">
+        <di:waypoint x="601" y="619" />
+        <di:waypoint x="601" y="664" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0hpbbzt_di" bpmnElement="SequenceFlow_0hpbbzt">
+        <di:waypoint x="601" y="780" />
+        <di:waypoint x="601" y="744" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_08sayp0_di" bpmnElement="EndEvent_08sayp0">
+        <dc:Bounds x="701" y="686" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_10pii2u_di" bpmnElement="SequenceFlow_10pii2u">
+        <di:waypoint x="651" y="704" />
+        <di:waypoint x="701" y="704" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0emljx6_di" bpmnElement="EndEvent_0emljx6">
+        <dc:Bounds x="701" y="443" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0x5gki4_di" bpmnElement="SequenceFlow_0x5gki4">
+        <di:waypoint x="637" y="461" />
+        <di:waypoint x="701" y="461" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_10gkynu_di" bpmnElement="Task_13cpy5h">
+        <dc:Bounds x="551" y="664" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

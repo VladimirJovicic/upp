@@ -7,21 +7,37 @@
         <input type="text" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='string'">
         <input type="checkbox" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='boolean'">
         <input type="number" name={{field.id}} ngModel class="form-control" *ngIf="field.type.name=='long'">
-        <select name="field.id" *ngIf="field.type.name=='enum'">
-          <option *ngFor="let val of enumValues" value={{val}}>
-            {{field.type.values[val]}}
+        <select name="{{field.id}}" ngModel class="form-control" *ngIf="field.type.name=='enum'">
+          <option *ngFor="let val of enumValues" value={{val.id}} class="form-control">
+            {{val.name}}
           </option>
         </select>
       </div>
     </div>
     <button class="btn btn-primary" style="width:100%" (click)="submitForm(f.value, f)"> Submit </button>
   </form>
- 
-  <div *ngIf="taskName == 'submit_paper_again'"class="tableDiv">
+
+  <div *ngIf="taskName == 'submit_paper_again'" class="tableDiv">
     <h3>*{{badFormatingMessage}}</h3>
   </div>
 
-  <div *ngIf="taskName == 'author_making_decision' || taskName == 'pdf_correction'"class="tableDiv">
+  <div *ngIf="taskName == 'pdf_correction'" class="tableDiv">
+    <h3>*{{smallOrBigChangesFeedback}}</h3>
+  </div>
+
+  <div *ngIf="taskName == 'reviewing_process'" class="tableDiv">
+    <h4>Text za ocenjivanje : {{pdfText}}</h4>
+  </div>
+
+  <div *ngIf="taskName == 'final_decision'" class="tableDiv">
+    <h3>Izmenjen tekts: {{pdfText}}</h3>
+  </div>
+
+  <div *ngIf="taskName == 'author_making_decision'" class="tableDiv">
+    <h3>Izmenjen tekts: {{pdfText}}</h3>
+  </div>
+
+  <div *ngIf="taskName == 'author_making_decision' || taskName == 'pdf_correction'" class="tableDiv">
     <table>
       <th colspan="2" class="commentHead"><b>Komentari recezenata : </b></th>
       <tr *ngFor="let review of reviews">
@@ -30,9 +46,9 @@
       </tr>
     </table>
   </div>
-  
 
-  <div *ngIf="taskName == 'check_scientific_paper'" class = "tableDiv">
+
+  <div *ngIf="taskName == 'check_scientific_paper'" class="tableDiv">
     <table>
       <tr>
         <td>Title : </td>
@@ -63,7 +79,12 @@
 </div>
 <div *ngIf="reviewerForm">
   <div class="form-group">
-    <input type="text" [(ngModel)]="reviewerIds" class="form-control">
+    <!--<input type="text" [(ngModel)]="reviewerIds" class="form-control"> -->
+    <form>
+      <div *ngFor="let reviewer of reviewers; let i = index">
+        <label><input type="checkbox" (change)="addOrRemove(reviewer, $event)">{{ reviewer.email }}</label>
+      </div>
+    </form>
     <button class="btn btn-primary" (click)="submitReviewers()"> Submit review</button>
   </div>
 </div>

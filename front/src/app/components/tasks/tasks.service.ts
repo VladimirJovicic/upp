@@ -36,4 +36,20 @@ export class TasksService {
     return this.httpClient.get(this.url + '/getReviews/'+ taskId);
   }
 
+  getBigOrSmallChangeFeedback(taskId: string) {
+    return this.httpClient.get(this.url + '/getBigOrSmallChangeFeedback/'+ taskId);
+  }
+
+  getPdfText(taskId: string) {
+    return this.httpClient.get(this.url + '/getPdfText/'+ taskId);
+  }
+
+  getScientificAreas() {
+    return this.httpClient.get(this.url + '/getScientificAreas');
+  }
+
+  getReviewers() {
+    return this.httpClient.get(this.url + '/getReviewers');
+  }
+
 }
