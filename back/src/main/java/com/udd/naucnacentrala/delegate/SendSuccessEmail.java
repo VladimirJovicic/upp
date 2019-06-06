@@ -28,8 +28,8 @@ public class SendSuccessEmail implements JavaDelegate {
 
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(author.getEmail());
-		emailDTO.setSubject("Succesfully submited paper notification email");
-		emailDTO.setMessage("Dear Sir/Madam, Congratulations, your scientific paper has been published sucesfully!");
+		emailDTO.setSubject("Uspesno objavljen rad");
+		emailDTO.setMessage("Cestitamo! Vas rad je uspesno objavljen");
 
 		emailService.sendMail(emailDTO);
 	}

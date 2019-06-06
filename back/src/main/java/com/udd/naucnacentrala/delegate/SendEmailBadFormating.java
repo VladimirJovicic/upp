@@ -28,9 +28,9 @@ public class SendEmailBadFormating implements JavaDelegate {
 
 		EmailDTO emailDto = new EmailDTO();
 		emailDto.setTo(author.getEmail());
-		emailDto.setSubject("Bad formating notification email");
-		emailDto.setMessage("Dear Sir/Madam, Formating of your scientific paper is bad, "
-				+ "please fix it and resubmit your paper. Explanation : " + execution.getVariable("badFormatingExplaining"));
+		emailDto.setSubject("Lose formatiran rad");
+		emailDto.setMessage("Postovani, Vas rad je lose formatiran. Molimo vas popravite to kako bi se rad mogao recenzirati. " 
+				+ "U nastavku mejla sledi objasnjenje : " + execution.getVariable("badFormatingExplaining"));
 
 		emailService.sendMail(emailDto);
 	}

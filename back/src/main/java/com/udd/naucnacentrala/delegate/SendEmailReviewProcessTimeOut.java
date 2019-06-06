@@ -28,8 +28,8 @@ public class SendEmailReviewProcessTimeOut implements JavaDelegate {
 		
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(mainEditor.getEmail());
-		emailDTO.setSubject("\"Review process timed out notification email");
-		emailDTO.setSubject("Dear Sir/Madam, The time has run out for reviewing the scientific paper.");
+		emailDTO.setSubject("Isteklo vreme recenzije");
+		emailDTO.setSubject("Postovani, isteklo je vreme za recenziju");
 
 		emailService.sendMail(emailDTO);
 	}

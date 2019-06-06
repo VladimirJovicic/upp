@@ -56,7 +56,7 @@ public class AuthController {
 				
 				final UserDetails userDetails = myAppUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 				final String token = jwtTokenUtil.generateToken(userDetails);			
-				return ResponseEntity.ok(new JwtAuthenticationResponse(token,userDetails, "Successfull login."));
+				return ResponseEntity.ok(new JwtAuthenticationResponse(token,userDetails, "Successfull login.", authenticationRequest.getUsername()));
 			} catch(AuthenticationException e) {
 				return new ResponseEntity<>(new JwtAuthenticationResponse("", null, "Username or password incorrect."), HttpStatus.FORBIDDEN);
 			}

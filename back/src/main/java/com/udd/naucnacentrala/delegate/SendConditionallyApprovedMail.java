@@ -27,8 +27,8 @@ public class SendConditionallyApprovedMail implements JavaDelegate{
 		
 		EmailDTO emailDto = new EmailDTO();
 		emailDto.setTo(author.getEmail());
-		emailDto.setSubject("Paper is conditionally notification email");
-		emailDto.setMessage("Dear Sir/Madam, Your paper has been conditionally approved.");
+		emailDto.setSubject("Uslovno prihvacen");
+		emailDto.setMessage("Postovani, Vas rad je uslovno prihvacen");
 		
 		emailService.sendMail(emailDto);
 	}

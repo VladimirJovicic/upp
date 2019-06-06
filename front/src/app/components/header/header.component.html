@@ -17,6 +17,11 @@
           </ng-template>
 
           <li><a
+            style="cursor: context-menu;"
+            *ngIf="authService.isAuthenticated()">Ulogovani ste kao : {{loggedUser}}</a>
+          </li>
+
+          <li><a
             style="cursor: pointer;"
             (click)="onLogout()"
             *ngIf="authService.isAuthenticated()">Logout</a>

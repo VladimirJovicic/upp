@@ -32,14 +32,14 @@ public class SendEmailAfterPaperSubmition implements JavaDelegate {
 
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(author.getEmail());
-		emailDTO.setSubject("New article submission notification email");
-		emailDTO.setMessage("Congratulations! You succesfully submitted an article. Please wait for a review.");
+		emailDTO.setSubject("Vas rad je prihvacen");
+		emailDTO.setMessage("Postovani, Vas rad je prihvacen i spreman za recenziju. Molim Vas da sacekate da se proces recenziranja zavrsi.");
 
 		emailService.sendMail(emailDTO);
 
 		emailDTO.setTo(mainEditor.getEmail());
-		emailDTO.setSubject("\"New article submission notification email");
-		emailDTO.setMessage("There is a new article in the Naucna centrala. Please login to see it.");
+		emailDTO.setSubject("Nov rad je objavljen u vasem casoposu");
+		emailDTO.setMessage("Postovani, nov rad je objavljen u casopisu gde ste vi glavni urednik. Molimo Vas pogledajte.");
 
 		emailService.sendMail(emailDTO);
 

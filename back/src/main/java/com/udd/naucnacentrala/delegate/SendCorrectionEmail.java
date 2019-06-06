@@ -28,8 +28,8 @@ public class SendCorrectionEmail implements JavaDelegate {
 		
 		EmailDTO emailDto = new EmailDTO();
 		emailDto.setTo(author.getEmail());
-		emailDto.setSubject("Paper correction notification email");
-		emailDto.setMessage("Dear Sir/Madam, Please correct the mistakes in your scientific paper.");
+		emailDto.setSubject("Korekcija");
+		emailDto.setMessage("Postovani. Vas rad je recenzran i potrebne su male izmene. Molimo Vas izvrsite ih u najkracem mogucem roku kako bi  se rad mogao dalje pregledati.");
 		
 		emailService.sendMail(emailDto);
 

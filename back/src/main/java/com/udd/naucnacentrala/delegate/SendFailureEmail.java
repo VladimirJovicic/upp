@@ -30,8 +30,8 @@ public class SendFailureEmail implements JavaDelegate {
 
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(author.getEmail());
-		emailDTO.setSubject("New article failure in submission notification email");
-		emailDTO.setMessage("Greetings, We are sorry, but your scientific paper has been rejected.");
+		emailDTO.setSubject("Odbijeno!");
+		emailDTO.setMessage("Postovani, zao nam je ali je Vas rad odbijen");
 
 		emailService.sendMail(emailDTO);
 	}

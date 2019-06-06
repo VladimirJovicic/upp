@@ -24,8 +24,8 @@ public class SendingTooLateMail implements JavaDelegate{
 
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(author.getEmail());
-		emailDTO.setSubject("Too late for pdf correction");
-		emailDTO.setMessage("Dear Sir/Madam, We are sorry, the time for your PDF correction is over!");
+		emailDTO.setSubject("Kasno za korekciju");
+		emailDTO.setMessage("Postovani. Isteklo je vreme za korekciju PDF teksta");
 
 		emailService.sendMail(emailDTO);		
 	}
