@@ -126,27 +126,6 @@ public class TaskController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	/*@PostMapping(path = "executeTaskReviewers/{taskId}")
-	public ResponseEntity<?> executeTaskReviewers(@RequestBody Map<String, Object> form, @PathVariable String taskId) {
-		System.out.println("TaskController.executeTaskReviewers...Executing the task with id: " + taskId);
-		System.out.println("TaskController.executeTaskReviewers...Following form data received:");
-		System.out.println(form);
-
-		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list()
-				.get(0);
-		if (task == null) {
-			System.out.println("TaskController.executeTask...Task completed succesfully.");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		runtimeService.setVariables(task.getProcessInstanceId(), form);
-		taskService.complete(taskId);
-		System.out.println("TaskController.executeTaskReviewers...Task completed succesfully.");
-
-		return new ResponseEntity<>(HttpStatus.OK);
-	}*/
-	
 	@GetMapping(value="/getScientificPaper/{taskId}")
 	public ResponseEntity<ScientificPaperDTO> getScientificPaper(@PathVariable String taskId) {
 		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());

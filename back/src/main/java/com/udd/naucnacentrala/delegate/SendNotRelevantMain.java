@@ -11,8 +11,8 @@ import com.udd.naucnacentrala.service.impl.EmailService;
 import com.udd.naucnacentrala.web.dto.EmailDTO;
 
 @Component
-public class SendEmailBadFormating implements JavaDelegate {
-
+public class SendNotRelevantMain implements JavaDelegate{
+	
 	@Autowired
 	private UserService userService;
 
@@ -23,15 +23,16 @@ public class SendEmailBadFormating implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
-		System.out.println("SendEmailBadFormating sending bad formating error email to author with ID: " + authorId);
+		System.out.println("SendSuccessEmail sending success email to author with ID: " + authorId);
 		User author = userService.findById(authorId);
 
-		EmailDTO emailDto = new EmailDTO();
-		emailDto.setTo(author.getEmail());
-		emailDto.setSubject("Lose formatiran rad");
-		emailDto.setMessage("Postovani, Vas rad je lose formatiran. Molimo vas popravite to kako bi se rad mogao recenzirati. " 
-				+ "U nastavku mejla sledi obrazlozenje  : <b>" + execution.getVariable("badFormatingExplaining").toString() + "</b>");
-
-		emailService.sendMail(emailDto);
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo(author.getEmail());
+		emailDTO.setSubject("Rad nije relevantan");
+		emailDTO.setMessage("Postovani, nazalost Vas rad nije relevantan. Obrazlozenje: <b>" 
+		+ execution.getVariable("notRelevantExlaining").toString()+"</b>");
+		
+		emailService.sendMail(emailDTO);
 	}
+
 }

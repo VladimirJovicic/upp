@@ -22,7 +22,6 @@ public class ChoseEditorOfScientificField implements JavaDelegate {
         final Long magazineId = (Long)execution.getVariable("magazineId");
         final Magazine magazine = magazineRepository.findById(magazineId).get();
         
-        
         if(magazine.getScientificAreas().get(0).getEditor() != null) {
         	System.out.println("Magazine has scientific area which has an editor.");
         	execution.setVariable("scientificAreaEditorId", magazine.getScientificAreas().get(0).getEditor().toString());

@@ -342,8 +342,8 @@ public class DataLoader implements ApplicationRunner {
 		User u3 = userRepository.getOne((long)7);
 		
 		reviewers1.add(u1);
-		reviewers1.add(u2);
-		reviewers1.add(u3);
+		//reviewers1.add(u2);
+		//reviewers1.add(u3);
 		
 		m1.setReviewers(reviewers1);
 		
