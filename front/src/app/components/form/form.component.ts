@@ -71,7 +71,7 @@ export class FormComponent implements OnInit {
   }
 
   getReviewers() {
-    this.taskService.getReviewers().subscribe(
+    this.taskService.getReviewers(localStorage.getItem('taskId')).subscribe(
       (data:any)=> {
         this.reviewers = data;
       }
@@ -144,13 +144,18 @@ export class FormComponent implements OnInit {
   }
 
   submitReviewers() {
+    if(this.selectedReviewers.length >= 2){
     let body = { reviewers: this.selectedReviewers}
-    this.taskService.executeTaskReviewers(body, this.taskId)
+    this.taskService.executeTask(body, this.taskId)
       .subscribe( (res: any) => {
         console.log('Succesfully executed executeTaskReviewers.');
         console.log(res);
         this.router.navigate(['/tasks']);
       });
+    }else {
+      alert("You must select at least 2 reivewers!")
+    }
   }
+
 
 }

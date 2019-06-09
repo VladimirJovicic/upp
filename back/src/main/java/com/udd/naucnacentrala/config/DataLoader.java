@@ -289,16 +289,39 @@ public class DataLoader implements ApplicationRunner {
 		u5.setTitle(null);
 		u5.setScientificAreas(null);
 		
-		/*
-		 * List<Authority> authorities5 = new ArrayList<Authority>(); Authority a5 = new
-		 * Authority(); a5.setName(UserRole.REVIEWER); authoritiesRepository.save(a5);
-		 * 
-		 * authorities4.add(authoritiesRepository.getOne(5l));
-		 */
 		u5.setAuthorities(authorities4);
 		
 		userRepository.save(u5);
 		
+		User u6 = new User();
+		
+		u6.setCity("Sombor");
+		u6.setEmail("joca@joca.com");
+		u6.setPassword(passwordEncoder1.encode("123"));
+		u6.setFirstName("Joca");
+		u6.setLastName("Recenzent");
+		u6.setState("Srbija");
+		u6.setTitle(null);
+		u6.setScientificAreas(null);
+		
+		u6.setAuthorities(authorities4);
+		
+		userRepository.save(u6);
+		
+		User u7 = new User();
+		
+		u7.setCity("Bereg");
+		u7.setEmail("mika@mika.com");
+		u7.setPassword(passwordEncoder1.encode("123"));
+		u7.setFirstName("Mika");
+		u7.setLastName("Recenzent");
+		u7.setState("Srbija");
+		u7.setTitle(null);
+		u7.setScientificAreas(null);
+		
+		u7.setAuthorities(authorities4);
+		
+		userRepository.save(u7);
 	}
 
 	private void insertIntoMagazine() {
@@ -316,9 +339,11 @@ public class DataLoader implements ApplicationRunner {
 		
 		User u1 = userRepository.getOne((long)4);
 		User u2 = userRepository.getOne((long)5);
+		User u3 = userRepository.getOne((long)7);
 		
 		reviewers1.add(u1);
 		reviewers1.add(u2);
+		reviewers1.add(u3);
 		
 		m1.setReviewers(reviewers1);
 		
@@ -327,11 +352,8 @@ public class DataLoader implements ApplicationRunner {
 		scientificAreas1.add(scientificAreaRepository.getOne((long)1));
 		
 		m1.setScientificAreas(scientificAreas1);
-		
 		Set<User> editorsOfSpecialAreas = new HashSet<User>();
-
 		editorsOfSpecialAreas.add(userRepository.getOne((long)3));
-		
 		m1.setEditorsOfSpecificAreas(editorsOfSpecialAreas);
 		
 		magazineRepository.saveAndFlush(m1);
@@ -351,6 +373,7 @@ public class DataLoader implements ApplicationRunner {
 		List<ScientificArea> scientificAreas2 = new ArrayList<ScientificArea>();
 		
 		reviewers2.add(userRepository.getOne((long)4));
+		reviewers2.add(userRepository.getOne((long)6));
 		editorsOfSpecialAreas2.add(userRepository.getOne((long)3));
 		scientificAreas2.add(scientificAreaRepository.getOne((long)2));
 		

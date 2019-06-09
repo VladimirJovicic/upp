@@ -48,8 +48,8 @@ export class TasksService {
     return this.httpClient.get(this.url + '/getScientificAreas');
   }
 
-  getReviewers() {
-    return this.httpClient.get(this.url + '/getReviewers');
+  getReviewers(taskId:string) {
+    return this.httpClient.get(this.url + '/getReviewers/'+taskId);
   }
 
 }

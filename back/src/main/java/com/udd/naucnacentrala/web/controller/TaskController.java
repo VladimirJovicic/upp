@@ -24,11 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udd.naucnacentrala.domain.Authority;
+import com.udd.naucnacentrala.domain.Magazine;
 import com.udd.naucnacentrala.domain.ScientificArea;
 import com.udd.naucnacentrala.domain.User;
 import com.udd.naucnacentrala.domain.UserRole;
 import com.udd.naucnacentrala.repository.ScientificAreaRepository;
-import com.udd.naucnacentrala.repository.UserRepository;
+import com.udd.naucnacentrala.service.MagazineService;
 import com.udd.naucnacentrala.service.UserService;
 import com.udd.naucnacentrala.web.dto.FormFieldsDto;
 import com.udd.naucnacentrala.web.dto.ReviewDTO;
@@ -46,9 +47,6 @@ public class TaskController {
 	private UserService userService;
 	
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
 	private RuntimeService runtimeService;
 
 	@Autowired
@@ -59,6 +57,9 @@ public class TaskController {
 	
 	@Autowired
 	ScientificAreaRepository scientificAreaRepository;
+	
+	@Autowired
+	private MagazineService magazineService;
 
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllTasks(Principal principal) {
@@ -125,7 +126,7 @@ public class TaskController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PostMapping(path = "executeTaskReviewers/{taskId}")
+	/*@PostMapping(path = "executeTaskReviewers/{taskId}")
 	public ResponseEntity<?> executeTaskReviewers(@RequestBody Map<String, Object> form, @PathVariable String taskId) {
 		System.out.println("TaskController.executeTaskReviewers...Executing the task with id: " + taskId);
 		System.out.println("TaskController.executeTaskReviewers...Following form data received:");
@@ -144,7 +145,7 @@ public class TaskController {
 		System.out.println("TaskController.executeTaskReviewers...Task completed succesfully.");
 
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
+	}*/
 	
 	@GetMapping(value="/getScientificPaper/{taskId}")
 	public ResponseEntity<ScientificPaperDTO> getScientificPaper(@PathVariable String taskId) {
@@ -231,14 +232,16 @@ public class TaskController {
 		return new ResponseEntity<List<ScientificAreaDTO>>(listOfDtoAreas, HttpStatus.OK);
 	}
 	
-	@GetMapping(value="getReviewers")
-	public ResponseEntity<List<UserDTO>> getReviewers() {
+	@GetMapping(value="getReviewers/{taskId}")
+	public ResponseEntity<List<UserDTO>> getReviewers(@PathVariable String taskId) {
+		User author = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
+		Magazine magazine = magazineService.findOne((Long)runtimeService.getVariable(task.getProcessInstanceId(), "magazineId"));
 		List<UserDTO> retVal = new ArrayList<UserDTO>();
 		
-		List<User> allUsers = userRepository.findAll();
-		for(User user: allUsers) {
+		for(User user: magazine.getReviewers()) {
 			for(Authority a : user.getAuthorities()) {
-				if(a.getName().equals(UserRole.EDITOR) || a.getName().equals(UserRole.REVIEWER)) {
+				if(/*a.getName().equals(UserRole.EDITOR) ||*/ a.getName().equals(UserRole.REVIEWER)) {
 					 UserDTO dto = new  UserDTO();
 					 dto.setEmail(user.getEmail());
 					 dto.setId(user.getId());
