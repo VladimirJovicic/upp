@@ -45,7 +45,7 @@ export class FormComponent implements OnInit {
       this.getPdfText();
     }
 
-    if(this.taskName == 'scientific_paper_submission') {
+    if(this.taskName == 'scientific_paper_submission' || this.taskName == 'submit_paper_again') {
       this.getScientificAreas();
     }
 

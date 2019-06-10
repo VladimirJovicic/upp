@@ -21,6 +21,8 @@ public class SendEmailBadFormating implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
+		
+		execution.removeVariable("scientificAreaId");
 
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
 		System.out.println("SendEmailBadFormating sending bad formating error email to author with ID: " + authorId);

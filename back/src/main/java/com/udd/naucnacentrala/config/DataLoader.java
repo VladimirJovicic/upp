@@ -342,8 +342,8 @@ public class DataLoader implements ApplicationRunner {
 		User u3 = userRepository.getOne((long)7);
 		
 		reviewers1.add(u1);
-		//reviewers1.add(u2);
-		//reviewers1.add(u3);
+		reviewers1.add(u2);
+		reviewers1.add(u3);
 		
 		m1.setReviewers(reviewers1);
 		
@@ -372,7 +372,7 @@ public class DataLoader implements ApplicationRunner {
 		Set<User> editorsOfSpecialAreas2 = new HashSet<User>();
 		List<ScientificArea> scientificAreas2 = new ArrayList<ScientificArea>();
 		
-		reviewers2.add(userRepository.getOne((long)4));
+		//reviewers2.add(userRepository.getOne((long)4));
 		reviewers2.add(userRepository.getOne((long)6));
 		editorsOfSpecialAreas2.add(userRepository.getOne((long)3));
 		scientificAreas2.add(scientificAreaRepository.getOne((long)2));

@@ -21,14 +21,14 @@ public class SendEmailTooManyTimesTried implements JavaDelegate{
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		Long mainEditorId = Long.parseLong((String) execution.getVariable("mainEditorId"));
-		System.out.println("SendEmailAfterPaperSubmition sending email to main editor with ID: " + mainEditorId);
-		User mainEditor = userService.findById(mainEditorId);
+		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
+		System.out.println("SendEmailAfterPaperSubmition sending email to main editor with ID: " + authorId);
+		User author = userService.findById(authorId);
 		
 		EmailDTO emailDTO = new EmailDTO();
-		emailDTO.setTo(mainEditor.getEmail());
+		emailDTO.setTo(author.getEmail());
 		emailDTO.setSubject("Prekoracili ste granicu slanja");
-		emailDTO.setSubject("Postovani, zao nam je ali iskoristile ste broj ponavljanja za ponovno slanje rada.");
+		emailDTO.setMessage("Postovani, zao nam je ali iskoristile ste broj ponavljanja za ponovno slanje rada.");
 
 		emailService.sendMail(emailDTO);
 	}
