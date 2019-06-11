@@ -23,7 +23,7 @@ public class SendNotRelevantMain implements JavaDelegate{
 	public void execute(DelegateExecution execution) throws Exception {
 
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
-		System.out.println("SendSuccessEmail sending success email to author with ID: " + authorId);
+		System.out.println("SendNotRelevantMain sending success email to author with ID: " + authorId);
 		User author = userService.findById(authorId);
 
 		EmailDTO emailDTO = new EmailDTO();

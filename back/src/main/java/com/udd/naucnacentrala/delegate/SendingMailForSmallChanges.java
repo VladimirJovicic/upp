@@ -20,7 +20,7 @@ public class SendingMailForSmallChanges implements JavaDelegate{
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
-		System.out.println("SendCorrectionEmail sending correction email to author with ID: " + authorId);
+		System.out.println("SendingMailForSmallChanges sending correction email to author with ID: " + authorId);
 		User author = userService.findById(authorId);
 		
 		EmailDTO emailDto = new EmailDTO();

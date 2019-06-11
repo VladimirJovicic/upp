@@ -27,12 +27,14 @@ public class SendEmailBadFormating implements JavaDelegate {
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
 		System.out.println("SendEmailBadFormating sending bad formating error email to author with ID: " + authorId);
 		User author = userService.findById(authorId);
+		execution.setVariable("hoursToFinishPaper", "PT"+execution.getVariable("hoursOfFinish").toString()+"H");
 
 		EmailDTO emailDto = new EmailDTO();
 		emailDto.setTo(author.getEmail());
 		emailDto.setSubject("Lose formatiran rad");
 		emailDto.setMessage("Postovani, Vas rad je lose formatiran. Molimo vas popravite to kako bi se rad mogao recenzirati. " 
-				+ "U nastavku mejla sledi obrazlozenje  : <b>" + execution.getVariable("badFormatingExplaining").toString() + "</b>");
+				+ "U nastavku mejla sledi obrazlozenje  : <b>" + execution.getVariable("badFormatingExplaining").toString() + "</b>"
+						+ ". Rok je " + execution.getVariable("hoursOfFinish").toString() + " sati.") ;
 
 		emailService.sendMail(emailDto);
 	}

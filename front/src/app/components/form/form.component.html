@@ -83,6 +83,7 @@
       <div *ngFor="let reviewer of reviewers; let i = index">
         <label><input type="checkbox" (change)="addOrRemove(reviewer, $event)">{{ reviewer.email }}</label>
       </div>
+      <label>Hours to finish <input type="number" [(ngModel)]="hoursOfFinishRev" name="hoursOfFinishRev"></label>
     </form>
     <button class="btn btn-primary" (click)="submitReviewers()"> Submit review</button>
   </div>

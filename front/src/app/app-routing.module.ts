@@ -8,7 +8,6 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
 import { AuthGuard } from './components/auth/auth-guard.service';
 import { MagazinesComponent } from './components/magazines/magazines.component';
-import { SearchScientificPaperComponent } from './components/search-scientific-paper/search-scientific-paper.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { FormComponent } from './components/form/form.component';
 
@@ -20,7 +19,6 @@ const appRoutes: Routes =
     { path: 'magazines', component: MagazinesComponent, canActivate: [AuthGuard] },
     { path: 'form', component: FormComponent, canActivate: [AuthGuard] },
     { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
-    { path: 'search', component: SearchScientificPaperComponent, canActivate: [AuthGuard] },
     { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found!'} },
     { path: '**', redirectTo: '/not-found' }
 ];

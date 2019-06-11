@@ -22,6 +22,7 @@ export class FormComponent implements OnInit {
   enumValues: any = [];
   reviewers: any = [];
   selectedReviewers: Array<{}> = [];
+  hoursOfFinishRev: Number = 1;
 
   constructor(private taskService:TasksService,
               private router: Router) { }
@@ -144,16 +145,20 @@ export class FormComponent implements OnInit {
   }
 
   submitReviewers() {
-    if(this.selectedReviewers.length >= 2){
-    let body = { reviewers: this.selectedReviewers}
+    if(this.selectedReviewers.length < 2){
+      alert("You must select at least 2 reivewers!")
+    }else if (this.hoursOfFinishRev < 1) {
+      alert("Number of hours must be greater than 0");
+      this.hoursOfFinishRev = 1;
+    }else {
+    let body = { reviewers: this.selectedReviewers,
+                 hoursOfFinishRev:this.hoursOfFinishRev }
     this.taskService.executeTask(body, this.taskId)
       .subscribe( (res: any) => {
         console.log('Succesfully executed executeTaskReviewers.');
         console.log(res);
         this.router.navigate(['/tasks']);
       });
-    }else {
-      alert("You must select at least 2 reivewers!")
     }
   }
 

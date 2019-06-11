@@ -22,7 +22,7 @@ public class SendEmailTooManyTimesTried implements JavaDelegate{
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		Long authorId = Long.parseLong((String) execution.getVariable("authorId"));
-		System.out.println("SendEmailAfterPaperSubmition sending email to main editor with ID: " + authorId);
+		System.out.println("SendEmailTooManyTimesTried sending email to main editor with ID: " + authorId);
 		User author = userService.findById(authorId);
 		
 		EmailDTO emailDTO = new EmailDTO();

@@ -23,13 +23,13 @@ public class SendEmailReviewProcessTimeOut implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		Long mainEditorId = Long.parseLong((String) execution.getVariable("mainEditorId"));
-		System.out.println("SendEmailAfterPaperSubmition sending email to main editor with ID: " + mainEditorId);
+		System.out.println("SendEmailReviewProcessTimeOut sending email to main editor with ID: " + mainEditorId);
 		User mainEditor = userService.findById(mainEditorId);
 		
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo(mainEditor.getEmail());
 		emailDTO.setSubject("Isteklo vreme recenzije");
-		emailDTO.setSubject("Postovani, isteklo je vreme za recenziju");
+		emailDTO.setMessage("Postovani, isteklo je vreme za recenziju");
 
 		emailService.sendMail(emailDTO);
 	}

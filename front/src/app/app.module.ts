@@ -14,8 +14,6 @@ import { AuthGuard } from './components/auth/auth-guard.service';
 import { AuthService } from './components/auth/auth.service';
 import { MagazinesComponent } from './components/magazines/magazines.component';
 import { MagazinesService } from './components/magazines/magazines.service';
-import { SearchScientificPaperComponent } from './components/search-scientific-paper/search-scientific-paper.component';
-import { SearchService } from './components/search-scientific-paper/search.service';
 import { AuthInterceptor } from './components/auth/auth.interceptor';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TasksService } from './components/tasks/tasks.service';
@@ -30,7 +28,6 @@ import { FormComponent } from './components/form/form.component';
     SigninComponent,
     SignupComponent,
     MagazinesComponent,
-    SearchScientificPaperComponent,
     TasksComponent,
     FormComponent
   ],
@@ -42,7 +39,6 @@ import { FormComponent } from './components/form/form.component';
   ],
   providers: [
     MagazinesService,
-    SearchService,
     TasksService,
     AuthService,
     AuthGuard,
