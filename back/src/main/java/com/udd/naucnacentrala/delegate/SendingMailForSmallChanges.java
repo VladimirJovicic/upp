@@ -3,12 +3,14 @@ package com.udd.naucnacentrala.delegate;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.udd.naucnacentrala.domain.User;
 import com.udd.naucnacentrala.service.UserService;
 import com.udd.naucnacentrala.service.impl.EmailService;
 import com.udd.naucnacentrala.web.dto.EmailDTO;
 
+@Component
 public class SendingMailForSmallChanges implements JavaDelegate{
 	
 	@Autowired
@@ -27,10 +29,11 @@ public class SendingMailForSmallChanges implements JavaDelegate{
 		emailDto.setTo(author.getEmail());
 		emailDto.setSubject("Korekcija");
 		emailDto.setMessage("Postovani. Potrebne su male izmene kako bi Vas rad bio prihvacen. "
-				+ "Objasnjenje : <b>"+execution.getVariable("explain_small_change").toString()+"</b>");
+				+ "Objasnjenje : <b>"+execution.getVariable("explain_small_change").toString()+"</b>. Vremenski rok je"
+						+ execution.getVariable("hoursToFinishPdfCorrection").toString()+"h");
 		
 		emailService.sendMail(emailDto);
-		
+		execution.setVariable("hoursToFinishPdfCorrection", "PT"+execution.getVariable("correctAgainTime").toString()+"H");
 	}
 
 }

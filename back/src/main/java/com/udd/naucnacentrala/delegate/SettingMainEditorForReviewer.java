@@ -27,6 +27,7 @@ public class SettingMainEditorForReviewer implements JavaDelegate {
 	     List<String> hugeListOfMillionRecords = new ArrayList<String>();
 	     hugeListOfMillionRecords.add(id);
 	     
+	     execution.setVariable("hoursToFinishReview", "PT24H");
 	     execution.setVariable("reviewers", hugeListOfMillionRecords);
 	}
 

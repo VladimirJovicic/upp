@@ -31,6 +31,8 @@ public class SendConditionallyApprovedMail implements JavaDelegate{
 		emailDto.setMessage("Postovani, Vas rad je uslovno prihvacen");
 		
 		emailService.sendMail(emailDto);
+		
+		execution.setVariable("hoursToFinishPdfCorrection", "PT"+execution.getVariable("pdfCorrectionTime").toString()+"H");
 	}
 
 }

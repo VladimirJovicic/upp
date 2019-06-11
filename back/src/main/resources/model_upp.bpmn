@@ -181,6 +181,7 @@
           <camunda:formField id="big_changes" label="Big change" type="boolean" />
           <camunda:formField id="explain_big_change" label="Explain Big Change" type="string" />
           <camunda:formField id="reviewAgain" label="Review again" type="boolean" />
+          <camunda:formField id="pdfCorrectionTime" label="PDF correction time" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1bdpdnx</bpmn:incoming>
@@ -216,7 +217,7 @@
     <bpmn:boundaryEvent id="BoundaryEvent_1ny8vxr" attachedToRef="pdf_correction">
       <bpmn:outgoing>SequenceFlow_0lxywa0</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P3D</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${hoursToFinishPdfCorrection}</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="EndEvent_12im1zi">
@@ -252,6 +253,7 @@
           <camunda:formField id="reject" label="Reject" type="boolean" />
           <camunda:formField id="change" label="Change pdf content" type="boolean" />
           <camunda:formField id="explain_small_change" label="Objsniti : " type="string" />
+          <camunda:formField id="correctAgainTime" label="Insert time in hours" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1uofetg</bpmn:incoming>
@@ -624,7 +626,7 @@
         <di:waypoint x="478" y="461" />
         <di:waypoint x="623" y="461" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="471" y="483" width="44" height="14" />
+          <dc:Bounds x="495" y="481" width="44" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="SendTask_0497eid_di" bpmnElement="Task_0gypwwn">
