@@ -23,6 +23,7 @@ export class FormComponent implements OnInit {
   reviewers: any = [];
   selectedReviewers: Array<{}> = [];
   hoursOfFinishRev: Number = 1;
+  reviewerDecision: string = "Prihvatiti";
 
   constructor(private taskService:TasksService,
               private router: Router) { }
@@ -120,8 +121,14 @@ export class FormComponent implements OnInit {
   }
 
   submitForm(formValue, f) {
-    console.log(formValue);
-    console.log(f);
+    
+    if(this.taskName == "reviewing_process") {
+      var odluka = formValue["review"] +" -> Predlog : "+this.reviewerDecision;
+      formValue["review"] = odluka;
+    }
+
+    console.log(formValue)
+    
     this.taskService.executeTask(formValue, this.taskId)
     .subscribe( data => {
       console.log(data);

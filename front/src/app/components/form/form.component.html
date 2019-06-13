@@ -12,6 +12,17 @@
             {{val.name}}
           </option>
         </select>
+
+        <div *ngIf="taskName == 'reviewing_process'">
+            <h5><b>Izaberi predlog:</b> </h5>
+            <select class="form-control" [(ngModel)]="reviewerDecision" name="reviewerDecision">
+              <option class="form-control" value="Prihvatiti" [selected]="true">Prihvatiti</option>
+              <option class="form-control" value="Prihvatiti uz manje izmene">Prihvatiti uz manje izmene</option>
+              <option class="form-control" value="Prihvati uz vece izmene">Prihvati uz vece izmene</option>
+              <option class="form-control" value="Odbiti">Odbiti</option>
+            </select>
+          </div>
+
       </div>
     </div>
     <button class="btn btn-primary" style="width:100%" (click)="submitForm(f.value, f)"> Submit </button>

@@ -53,6 +53,10 @@ public class Magazine {
 	@ManyToMany
 	private Set<User> editorsOfSpecificAreas;
 	
+	@JoinTable(name ="payed_subscription")
+	@ManyToMany
+	private Set<User> payers;
+	
 	@NotNull
 	private double price;
 	
@@ -141,5 +145,15 @@ public class Magazine {
 	public void setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 	}
+
+	public Set<User> getPayers() {
+		return payers;
+	}
+
+	public void setPayers(Set<User> payers) {
+		this.payers = payers;
+	}
+	
+	
 	
 }

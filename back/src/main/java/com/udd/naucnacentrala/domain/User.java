@@ -51,7 +51,7 @@ public class User {
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "id")})
-    private List<Authority> authorities;;
+    private List<Authority> authorities;
 	
 	private String city;
 	

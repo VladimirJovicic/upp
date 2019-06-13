@@ -334,6 +334,7 @@ public class DataLoader implements ApplicationRunner {
 		m1.setPrice((double)3);
 		m1.setMainEditor(userRepository.getOne((long)3));
 		m1.setMerchantId("merchantID1");
+		m1.setPayers(new HashSet<User>(0));
 		
 		Set<User> reviewers1 = new HashSet<User>();
 		
@@ -355,6 +356,7 @@ public class DataLoader implements ApplicationRunner {
 		Set<User> editorsOfSpecialAreas = new HashSet<User>();
 		editorsOfSpecialAreas.add(userRepository.getOne((long)3));
 		m1.setEditorsOfSpecificAreas(editorsOfSpecialAreas);
+		m1.getPayers().add(userRepository.getOne((long)1));
 		
 		magazineRepository.saveAndFlush(m1);
 		
@@ -366,7 +368,7 @@ public class DataLoader implements ApplicationRunner {
 		m2.setPrice((double)2);
 		m2.setMainEditor(userRepository.getOne((long)3));
 		m2.setMerchantId("merchantID2");
-
+		m2.setPayers(new HashSet<User>(0));
 		
 		Set<User> reviewers2 = new HashSet<User>();
 		Set<User> editorsOfSpecialAreas2 = new HashSet<User>();

@@ -28,7 +28,7 @@ public class AddingPaperToDatabase implements JavaDelegate {
 	
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        System.out.println("Starting task IndexingWithDOI...");
+        System.out.println("Starting task AddingPaperToDatabase...");
         
         ScientificPaper scientificPaper = new ScientificPaper();
         scientificPaper.setTitle(execution.getVariable("title").toString());
@@ -41,7 +41,7 @@ public class AddingPaperToDatabase implements JavaDelegate {
 		scientificPaper.setAuthor(userService.findById(Long.parseLong(execution.getVariable("authorId").toString())));
 		
 		scientificPaperService.save(scientificPaper);
-        System.out.println("Ending task IndexingWithDOI...");	
+        System.out.println("Ending task AddingPaperToDatabase...");	
 	}
 
 }

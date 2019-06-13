@@ -99,7 +99,7 @@ public class TaskController {
 
 		Task task = taskService.createTaskQuery().taskId(taskId).active().taskAssignee(author.getId().toString()).list().get(0);
 		if (task == null) {
-			System.out.println("TaskController.executeTask...Task completed succesfully.");
+			System.out.println("TaskController.executeTask...Task does not exist.");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if (form.get("review") != null) {
